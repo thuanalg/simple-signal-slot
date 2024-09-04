@@ -41,6 +41,7 @@ public:
 	virtual ~simple_signal_slot();
 protected:
 private:
+	simple_signal_slot *m_implement;
 };
 
 /*-----------------------------------------------------------------------------------------*/
