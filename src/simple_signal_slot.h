@@ -65,8 +65,8 @@ class DLL_API_SIMPLE_SIGNAL_SLOT simple_signal_slot {
 public:
 	simple_signal_slot();
 	virtual ~simple_signal_slot();
-	int signal_event(simple_signal_slot*, generic_data_obj_st*);
-	int event_slot(generic_data_obj_st*);
+	virtual int signal_event(simple_signal_slot*, generic_data_obj_st*);
+	virtual int event_slot(generic_data_obj_st*);
 protected:
 private:
 	simple_signal_slot *m_implement;
