@@ -13,8 +13,8 @@
 *		TODO
 */
 /*===============================================================================================================*/
-#ifndef ___SIMPLE_SINGNAL_SLOT__
-#define ___SIMPLE_SINGNAL_SLOT__
+#ifndef ___SIMPLE_SIGNAL_SLOT__
+#define ___SIMPLE_SIGNAL_SLOT__
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,23 +28,45 @@ extern "C" {
 
 /*-----------------------------------------------------------------------------------------*/
 #ifndef  UNIX_LINUX
-	#ifndef __SIMPLE_SINGNAL_SLOT_STATIC_LOG__
-		#ifdef EXPORT_DLL_API_SIMPLE_SINGNAL_SLOT
-			#define DLL_API_SIMPLE_SINGNAL_SLOT		__declspec(dllexport)
+	#ifndef __SIMPLE_SIGNAL_SLOT_STATIC_LOG__
+		#ifdef EXPORT_DLL_API_SIMPLE_SIGNAL_SLOT
+			#define DLL_API_SIMPLE_SIGNAL_SLOT		__declspec(dllexport)
 		#else
-			#define DLL_API_SIMPLE_SINGNAL_SLOT		__declspec(dllimport)
+			#define DLL_API_SIMPLE_SIGNAL_SLOT		__declspec(dllimport)
 		#endif
 	#else
-	#define DLL_API_SIMPLE_SINGNAL_SLOT
+		#define DLL_API_SIMPLE_SIGNAL_SLOT
 	#endif
 #else
-	#define DLL_API_SIMPLE_SINGNAL_SLOT
+	#define DLL_API_SIMPLE_SIGNAL_SLOT
 #endif /*! UNIX_LINUX */ 
 /*-----------------------------------------------------------------------------------------*/
-class DLL_API_SIMPLE_SINGNAL_SLOT simple_signal_slot {
+typedef struct __GENERIC_DATA_OBJ__ {
+	int 
+		total;
+		/*TODO: comment*/
+	int 
+		simple_event_id;
+		/*TODO: comment*/
+	int 
+		pc;
+		/*TODO: comment*/
+	int 
+		pl;
+		/*TODO: comment*/
+	char 
+		data[0];
+		/*TODO: comment*/
+} GENERIC_DATA_OBJ;
+
+#define generic_data_obj_st		GENERIC_DATA_OBJ
+
+class DLL_API_SIMPLE_SIGNAL_SLOT simple_signal_slot {
 public:
 	simple_signal_slot();
 	virtual ~simple_signal_slot();
+	int signal_event(simple_signal_slot*, generic_data_obj_st*);
+	int event_slot(generic_data_obj_st*);
 protected:
 private:
 	simple_signal_slot *m_implement;
