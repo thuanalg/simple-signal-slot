@@ -20,6 +20,12 @@
 extern "C" {
 #endif
 
+/*
+#ifndef UNIX_LINUX
+	#define UNIX_LINUX
+#endif
+*/
+
 /*-----------------------------------------------------------------------------------------*/
 #ifndef  UNIX_LINUX
 	#ifndef __SIMPLE_SINGNAL_SLOT_STATIC_LOG__
