@@ -68,7 +68,7 @@ public:
 	virtual ~simple_signal_slot();
 	virtual int signal_event(simple_signal_slot*, generic_data_obj_st*);
 	virtual int event_slot(generic_data_obj_st*);
-	virtual void GetClassName(std::string& str);
+	virtual void GetClassCurrentName(std::string& str);
 	//char class_name[128];
 
 protected:

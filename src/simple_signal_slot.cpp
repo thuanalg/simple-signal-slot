@@ -53,7 +53,7 @@ int simple_signal_slot::event_slot(generic_data_obj_st * evvt)
 	return 0;
 }
 
-void simple_signal_slot::GetClassName(std::string& str)
+void simple_signal_slot::GetClassCurrentName(std::string& str)
 {
 	str.clear();
 	str = "simple_signal_slot";

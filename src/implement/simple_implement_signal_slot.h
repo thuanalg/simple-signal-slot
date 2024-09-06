@@ -13,15 +13,17 @@
 *		TODO
 */
 /*===============================================================================================================*/
+
 #ifndef ___SIMPLE_IMPLEMENT_SIGNAL_SLOT__
 #define ___SIMPLE_IMPLEMENT_SIGNAL_SLOT__
+#include <vector>
+using namespace std;
 #include "simple_signal_slot.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 /*https://cplusplus.com/reference/Vector/Vector/*/
-#include <vector>
-using namespace std;
+
 /*-----------------------------------------------------------------------------------------*/
 
 typedef struct __ZZZZZZ__{
@@ -35,11 +37,11 @@ public:
 	virtual ~simple_implement_signal_slot();
 	int signal_event(simple_signal_slot*, generic_data_obj_st*);
 	int event_slot(generic_data_obj_st*);
-	void GetClassName(std::string& str);
+	void GetClassCurrentName(std::string& str);
+	std::vector<ZZZZZZ> m_eventList;
 protected:
 private:
-	std::vector<ZZZZZZ> m_eventList;
-	static int wait_for_event_loop(simple_signal_slot*, generic_data_obj_st*);
+	int generate_event_thread(void*);
 };
 
 /*-----------------------------------------------------------------------------------------*/
