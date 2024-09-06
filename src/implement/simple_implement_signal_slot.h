@@ -19,17 +19,27 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+/*https://cplusplus.com/reference/Vector/Vector/*/
+#include <vector>
+using namespace std;
 /*-----------------------------------------------------------------------------------------*/
+
+typedef struct __ZZZZZZ__{
+	void* target;
+	generic_data_obj_st* evt;
+} ZZZZZZ;
 
 class simple_implement_signal_slot: public simple_signal_slot{
 public:
 	simple_implement_signal_slot();
 	virtual ~simple_implement_signal_slot();
-	virtual int signal_event(simple_signal_slot*, generic_data_obj_st*);
-	virtual int event_slot(generic_data_obj_st*);
+	int signal_event(simple_signal_slot*, generic_data_obj_st*);
+	int event_slot(generic_data_obj_st*);
+	void GetClassName(std::string& str);
 protected:
 private:
+	std::vector<ZZZZZZ> m_eventList;
+	static int wait_for_event_loop(simple_signal_slot*, generic_data_obj_st*);
 };
 
 /*-----------------------------------------------------------------------------------------*/

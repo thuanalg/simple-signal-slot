@@ -15,7 +15,8 @@
 /*===============================================================================================================*/
 #ifndef ___SIMPLE_SIGNAL_SLOT__
 #define ___SIMPLE_SIGNAL_SLOT__
-
+#include <string>
+using namespace std;
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -67,9 +68,12 @@ public:
 	virtual ~simple_signal_slot();
 	virtual int signal_event(simple_signal_slot*, generic_data_obj_st*);
 	virtual int event_slot(generic_data_obj_st*);
+	virtual void GetClassName(std::string& str);
+	//char class_name[128];
+
 protected:
 private:
-	simple_signal_slot *m_implement;
+	simple_signal_slot *m_implement;	
 };
 
 /*-----------------------------------------------------------------------------------------*/
