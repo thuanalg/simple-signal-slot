@@ -27,6 +27,11 @@
 */
 static void* spl_signal_slot_create_sem();
 static void* spl_signal_slot_create_mutex();
+static int spl_signal_slot_sem_raise_event(void*);
+int spl_signal_slot_sem_raise_event(void* sem)
+{
+	return 0;
+}
 static DWORD WINAPI simple_implement_signal_slot_wait_for_event_loop(LPVOID lpParam);
 void* spl_signal_slot_create_sem() {
 	void* ret = 0;
@@ -84,7 +89,8 @@ simple_implement_signal_slot::simple_implement_signal_slot()
 simple_implement_signal_slot::simple_implement_signal_slot(simple_signal_slot* looper)
 {
 	//m_eventList.clear();
-	m_looper = looper;
+	simple_implement_signal_slot* obj = (simple_implement_signal_slot*)looper->m_implement;
+	m_looper = obj->m_looper;
 	m_looper = 0;
 	m_sem = m_mutex = 0;
 	fprintf(stdout, "---\n");
@@ -99,9 +105,15 @@ simple_implement_signal_slot::~simple_implement_signal_slot()
 int simple_implement_signal_slot::signal_event(simple_signal_slot *target, generic_data_obj_st * evennt)
 {
 	int ret = 0;
-	ZZZZZZ obj = { 0, 0 };
-	obj.target = target;
-	obj.evt = evennt;
+	do {
+		ZZZZZZ obj = { 0, 0 };
+		obj.evt = evennt;
+		obj.target = target;
+		//Muex
+		this->m_looper->m_eventList.push_back(obj);
+		//Mutex
+		spl_signal_slot_sem_raise_event(m_sem);
+	} while (0);
 	return ret;
 }
 

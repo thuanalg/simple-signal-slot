@@ -50,8 +50,9 @@ int simple_signal_slot::signal_event(simple_signal_slot *target, generic_data_ob
 {
 	int ret = 0;
 	fprintf(stdout, "===========\n");
-	if (m_implement) {
-		ret = m_implement->signal_event(target, evvt);
+	simple_implement_signal_slot* obj = (simple_implement_signal_slot*)m_implement;
+	if (obj) {
+		ret = obj->signal_event(target, evvt);
 	}
 	return ret;
 }

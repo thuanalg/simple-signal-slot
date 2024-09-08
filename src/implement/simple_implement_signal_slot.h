@@ -42,10 +42,11 @@ public:
 	std::vector<ZZZZZZ> m_eventList;
 	void* m_sem;
 	void* m_mutex;
+	simple_implement_signal_slot* m_looper = 0;
 protected:
 private:
 	int generate_event_thread(void*);
-	simple_signal_slot* m_looper = 0;
+	
 };
 
 /*-----------------------------------------------------------------------------------------*/
