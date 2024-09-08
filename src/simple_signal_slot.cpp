@@ -70,7 +70,7 @@ void simple_signal_slot::GetClassCurrentName(std::string& str)
 	str = "simple_signal_slot";
 }
 
-void simple_signal_slot::Init_MainthreadID()
+void simple_signal_slot::InitMainthreadID()
 {
 #ifndef UNIX_LINUX
 	simple_signal_slot::m_MainthreadID = (LLU)GetCurrentThreadId();

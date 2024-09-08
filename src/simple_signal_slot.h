@@ -74,12 +74,10 @@ public:
 	virtual int event_slot(generic_data_obj_st*);
 	virtual void GetClassCurrentName(std::string& str);
 	static LLU m_MainthreadID;
-	static void Init_MainthreadID();
+	static void InitMainthreadID();
 	void* m_implement;
 protected:
-	//simple_signal_slot* m_implement;
 private:
-	//simple_signal_slot *m_implement;	
 };
 
 /*-----------------------------------------------------------------------------------------*/
