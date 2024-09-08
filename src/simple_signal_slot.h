@@ -42,6 +42,9 @@ extern "C" {
 	#define DLL_API_SIMPLE_SIGNAL_SLOT
 #endif /*! UNIX_LINUX */ 
 /*-----------------------------------------------------------------------------------------*/
+#ifndef LLU
+	#define LLU unsigned long long
+#endif
 typedef struct __GENERIC_DATA_OBJ__ {
 	int 
 		total;
@@ -65,12 +68,13 @@ typedef struct __GENERIC_DATA_OBJ__ {
 class DLL_API_SIMPLE_SIGNAL_SLOT simple_signal_slot {
 public:
 	simple_signal_slot();
+	simple_signal_slot(simple_signal_slot *);
 	virtual ~simple_signal_slot();
-	virtual int signal_event(simple_signal_slot*, generic_data_obj_st*);
+	virtual int signal_event(simple_signal_slot *dest, generic_data_obj_st*);
 	virtual int event_slot(generic_data_obj_st*);
 	virtual void GetClassCurrentName(std::string& str);
-	//char class_name[128];
-
+	static LLU m_MainthreadID;
+	static void Init_MainthreadID();
 protected:
 private:
 	simple_signal_slot *m_implement;	

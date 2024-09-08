@@ -34,14 +34,18 @@ typedef struct __ZZZZZZ__{
 class simple_implement_signal_slot: public simple_signal_slot{
 public:
 	simple_implement_signal_slot();
+	simple_implement_signal_slot(simple_signal_slot *);
 	virtual ~simple_implement_signal_slot();
 	int signal_event(simple_signal_slot*, generic_data_obj_st*);
 	int event_slot(generic_data_obj_st*);
 	void GetClassCurrentName(std::string& str);
 	std::vector<ZZZZZZ> m_eventList;
+	void* m_sem;
+	void* m_mutex;
 protected:
 private:
 	int generate_event_thread(void*);
+	simple_signal_slot* m_looper = 0;
 };
 
 /*-----------------------------------------------------------------------------------------*/

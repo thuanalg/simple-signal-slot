@@ -1,6 +1,9 @@
 ﻿#include "simple_implement_signal_slot.h"
 #include <stdio.h>
-#include <windows.h>
+#ifndef UNIX_LINUX
+	#include <windows.h>
+#else
+#endif
 
 /*===============================================================================================================*/
 /* Email:
@@ -12,26 +15,78 @@
 * Date:
 *		<2024-Sep-04>
 * The lasted modified date:
-*		<2024-Sep-05>
+*		<2024-Sep-09>
 * Decription:
 *		TODO
 */
 /*===============================================================================================================*/
-
+/*
+#ifndef UNIX_LINUX
+#else
+#endif
+*/
 static void* spl_signal_slot_create_sem();
 static void* spl_signal_slot_create_mutex();
 static DWORD WINAPI simple_implement_signal_slot_wait_for_event_loop(LPVOID lpParam);
 void* spl_signal_slot_create_sem() {
 	void* ret = 0;
+	do {
+#ifndef UNIX_LINUX
+		HANDLE hd = 0;
+		hd = CreateSemaphoreA(0, 0, 1, 0);
+		if (!hd) {
+			//Log error
+			break;
+		}
+		ret = hd;
+#else
+
+#endif
+	} while (0);
 	return ret;
 }
 void* spl_signal_slot_create_mutex() {
 	void* ret = 0;
+	do {
+#ifndef UNIX_LINUX
+		HANDLE hd = 0;
+		hd = CreateMutexA(0, 0, 0);
+		if (!hd) {
+			//Log error
+			break;
+		}
+		ret = hd;
+#else
+
+#endif
+	} while (0);
 	return ret;
 }
 simple_implement_signal_slot::simple_implement_signal_slot()
 {
+	m_sem = m_mutex = 0;
+	m_looper = 0;
+	do {
+		m_sem = spl_signal_slot_create_sem();
+		if (!m_sem) {
+			break;
+		}
+		m_mutex = spl_signal_slot_create_mutex();
+		if (!m_mutex) {
+			break;
+		}
+		m_looper = this;
+		generate_event_thread(this);
+	} while (0);
+	fprintf(stdout, "---\n");
+}
+
+simple_implement_signal_slot::simple_implement_signal_slot(simple_signal_slot* looper)
+{
 	//m_eventList.clear();
+	m_looper = looper;
+	m_looper = 0;
+	m_sem = m_mutex = 0;
 	fprintf(stdout, "---\n");
 }
 
@@ -67,9 +122,14 @@ void simple_implement_signal_slot::GetClassCurrentName(std::string& str)
 
 int simple_implement_signal_slot::generate_event_thread(void* arg)
 {
-	HANDLE hd = 0;
-	DWORD thid = 0;
-	hd = CreateThread(0, 0, simple_implement_signal_slot_wait_for_event_loop, this, 0, &thid);
+	do {
+#ifndef UNIX_LINUX
+		HANDLE hd = 0;
+		DWORD thid = 0;
+		hd = CreateThread(0, 0, simple_implement_signal_slot_wait_for_event_loop, arg, 0, &thid);
+#else
+#endif
+	} while (0);
 	return 0;
 }
 

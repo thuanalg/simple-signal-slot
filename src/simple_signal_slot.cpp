@@ -1,6 +1,10 @@
 ﻿#include "simple_signal_slot.h"
+#include "simple_implement_signal_slot.h"
 #include <stdio.h>
-
+#ifndef UNIX_LINUX
+#include <windows.h>
+#else
+#endif
 /*===============================================================================================================*/
 /* Email:
 *		<nguyenthaithuanalg@gmail.com> - Nguyễn Thái Thuận
@@ -16,10 +20,20 @@
 *		TODO
 */
 /*===============================================================================================================*/
-
+/*
+#ifndef UNIX_LINUX
+#else
+#endif
+*/
 simple_signal_slot::simple_signal_slot()
 {
-	m_implement = 0;
+	m_implement = new simple_implement_signal_slot();
+	fprintf(stdout, "---\n");
+}
+
+simple_signal_slot::simple_signal_slot(simple_signal_slot *looper)
+{
+	m_implement = new simple_implement_signal_slot(looper);
 	fprintf(stdout, "---\n");
 }
 
@@ -45,12 +59,8 @@ int simple_signal_slot::signal_event(simple_signal_slot *target, generic_data_ob
 int simple_signal_slot::event_slot(generic_data_obj_st * evvt)
 {
 	int ret = 0;
-	fprintf(stdout, "===========\n");
-	if (m_implement) {
-		ret = m_implement->event_slot(evvt);
-	}
+
 	return ret;
-	return 0;
 }
 
 void simple_signal_slot::GetClassCurrentName(std::string& str)
@@ -58,3 +68,13 @@ void simple_signal_slot::GetClassCurrentName(std::string& str)
 	str.clear();
 	str = "simple_signal_slot";
 }
+
+void simple_signal_slot::Init_MainthreadID()
+{
+#ifndef UNIX_LINUX
+	simple_signal_slot::m_MainthreadID = (LLU)GetCurrentThreadId();
+#else
+#endif
+}
+
+LLU simple_signal_slot::m_MainthreadID = 0;
