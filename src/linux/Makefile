@@ -16,7 +16,7 @@ libtarget_signalslot=libsignalslot.so
 debug:
 	gcc ${debugFlag} -o ${target} ${src} ${LIBS} ${CFLAGS}
 #	gcc -g -o simpplelog_sample  ../c_test/main.c ${src} ${LIBS} ${INC}
-	g++ -g -o ${libtarget_signalslot}  ${signal_slot} ${LIBS} ${CPPFLAGS} ${INC} -L./ -lsimplelog
+	g++ ${debugFlag} -o ${libtarget_signalslot}  ${signal_slot} ${LIBS} ${CPPFLAGS} ${INC} -L./ -lsimplelog
 #	g++ -g -o simpplelog_cpp_direct_sample  ../cpp_test/main.cpp ${src} ${LIBS} ${INC} ${CPPFLAGS}
 
 release:
@@ -24,7 +24,7 @@ release:
 #	gcc -o simpplelog_sample  ../c_test/main.c ${src} ${LIBS} ${INC}
 #	g++ -o simpplelog_cpp_sample  ../cpp_test/main.cpp ${LIBS} ${INC} ${CPPFLAGS} -L./ -lsimplelog
 #	g++ -o simpplelog_cpp_direct_sample  ../cpp_test/main.cpp ${src} ${LIBS} ${INC} ${CPPFLAGS}
-	g++ -g -o ${libtarget_signalslot}  ${signal_slot} ${LIBS} ${CPPFLAGS} ${INC} -L./ -lsimplelog
+	g++ ${releaseFlag} -o ${libtarget_signalslot}  ${signal_slot} ${LIBS} ${CPPFLAGS} ${INC} -L./ -lsimplelog
 
 clean:
 	rm -rf ${target} ${libtarget_signalslot}
