@@ -1,6 +1,7 @@
 ﻿#include "simple_signal_slot.h"
 #include "simple_implement_signal_slot.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #ifndef UNIX_LINUX
 #include <windows.h>
