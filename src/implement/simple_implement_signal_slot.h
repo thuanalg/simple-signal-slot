@@ -43,7 +43,7 @@ public:
 	std::vector<SS_EVENT_ST *> m_eventList;
 	void* m_sem;
 	void* m_mutex;
-	simple_implement_signal_slot* m_looper = 0;
+	void* m_looper = 0;
 	LLU m_curentThread;
 	void SetName(const std::string& name);
 	void GetName(std::string& name);

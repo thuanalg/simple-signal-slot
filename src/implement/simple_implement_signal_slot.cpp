@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #ifndef UNIX_LINUX
 	#include <windows.h>
 #else
@@ -95,9 +96,10 @@ simple_implement_signal_slot::simple_implement_signal_slot(simple_signal_slot* l
 	}
 	else {
 		simple_implement_signal_slot* obj = (simple_implement_signal_slot*)looper->m_implement;
+		simple_implement_signal_slot* loopper = (simple_implement_signal_slot*)obj->m_looper;
 		m_looper = obj->m_looper;
 		m_sem = m_mutex = 0;
-		m_curentThread = obj->m_looper->m_curentThread;
+		m_curentThread = loopper->m_curentThread;
 	}
 }
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -120,6 +122,7 @@ int simple_implement_signal_slot::signal_event(simple_signal_slot* src, simple_s
 {
 	int ret = 0;
 	simple_implement_signal_slot* p = 0;
+	simple_implement_signal_slot* looper = 0;
 	do {
 		SS_EVENT_ST *obj = 0;
 		//obj = (SS_EVENT_ST*) malloc(sizeof(SS_EVENT_ST));
@@ -134,15 +137,16 @@ int simple_implement_signal_slot::signal_event(simple_signal_slot* src, simple_s
 			break;
 		}
 		p = (simple_implement_signal_slot*)target->m_implement;
+		looper = (simple_implement_signal_slot*)p->m_looper;
 		if (!p->m_looper) {
 			break;
 		}
-		ss_mutex_lock(p->m_looper->m_mutex);
+		ss_mutex_lock(looper->m_mutex);
 		if (1) {
-			p->m_looper->m_eventList.push_back(obj);
+			looper->m_eventList.push_back(obj);
 		}
-		ss_mutex_unlock(p->m_looper->m_mutex);
-		ss_sem_post(p->m_looper->m_sem);
+		ss_mutex_unlock(looper->m_mutex);
+		ss_sem_post(looper->m_sem);
 	} while (0);
 	return ret;
 }

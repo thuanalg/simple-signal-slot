@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 #ifndef UNIX_LINUX
-#include <windows.h>
+	#include <windows.h>
 #else
-#include <pthread.h>
+	#include <pthread.h>
 #endif
 #include "simplelog.h"
 /*===============================================================================================================*/
