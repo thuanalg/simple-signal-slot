@@ -1,0 +1,88 @@
+﻿  simplelog.c
+C:\z\simple-signal-slot\simplelog\simplelog.c(342,5): warning C4273: 'spl_set_log_levwel': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(164,2):
+      see previous definition of 'spl_set_log_levwel'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(347,5): warning C4273: 'spl_get_log_levwel': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(166,2):
+      see previous definition of 'spl_get_log_levwel'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(351,5): warning C4273: 'spl_set_off': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(176,2):
+      see previous definition of 'spl_set_off'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(373,5): warning C4273: 'spl_get_off': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(178,2):
+      see previous definition of 'spl_get_off'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(465,1): warning C4273: 'spl_init_log': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(156,2):
+      see previous definition of 'spl_init_log'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(584,7): warning C4273: 'spl_mutex_create': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(194,8):
+      see previous definition of 'spl_mutex_create'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(621,5): warning C4273: 'spl_mutex_lock': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(172,2):
+      see previous definition of 'spl_mutex_lock'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(645,5): warning C4273: 'spl_mutex_unlock': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(174,2):
+      see previous definition of 'spl_mutex_unlock'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(858,5): warning C4273: 'spl_fmt_now': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(168,2):
+      see previous definition of 'spl_fmt_now'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(912,5): warning C4273: 'spl_fmmt_now': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(170,2):
+      see previous definition of 'spl_fmmt_now'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1064,7): warning C4273: 'spl_get_mtx': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(180,2):
+      see previous definition of 'spl_get_mtx'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1068,7): warning C4273: 'spl_get_sem_rwfile': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(182,2):
+      see previous definition of 'spl_get_sem_rwfile'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1072,5): warning C4273: 'spl_get_threadid': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(184,2):
+      see previous definition of 'spl_get_threadid'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1080,5): warning C4273: 'spl_rel_sem': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(186,2):
+      see previous definition of 'spl_rel_sem'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1106,13): warning C4273: 'spl_get_text': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(188,2):
+      see previous definition of 'spl_get_text'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1133,5): warning C4273: 'spl_finish_log': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(160,2):
+      see previous definition of 'spl_finish_log'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1162,7): warning C4273: 'spl_get_buf': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(190,2):
+      see previous definition of 'spl_get_buf'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1272,6): warning C4273: 'spl_sleep': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(196,7):
+      see previous definition of 'spl_sleep'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1280,5): warning C4273: 'spl_standardize_path': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(198,6):
+      see previous definition of 'spl_standardize_path'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1479,1): warning C4273: 'spl_get_buf_topic': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(192,2):
+      see previous definition of 'spl_get_buf_topic'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1501,1): warning C4273: 'spl_milli_now': inconsistent dll linkage
+      C:\z\simple-signal-slot\simplelog\simplelog.h(200,6):
+      see previous definition of 'spl_milli_now'
+  
+C:\z\simple-signal-slot\simplelog\simplelog.c(1562,17): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+     Creating library C:\z\simple-signal-slot\build64\Debug\simplelog.lib and object C:\z\simple-signal-slot\build64\Debug\simplelog.exp
+  simplelog.vcxproj -> C:\z\simple-signal-slot\build64\Debug\simplelog.dll
