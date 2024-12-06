@@ -29,8 +29,14 @@
 /*
 #ifndef UNIX_LINUX
 #else
+	using namespace std::literals;
 #endif
 */
+//
+#ifndef UNIX_LINUX
+#else
+//using namespace std::literals;
+#endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 simple_signal_slot::simple_signal_slot()
