@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
 #else
 
 #endif
-		spl_sleep(5 * 1000);
+		spl_sleep(5);
 	} while (0);
 	spl_finish_log();
 	return 0;
