@@ -1,11 +1,16 @@
 ﻿#include "simple_signal_slot.h"
+#include "simplelog.h"
 #include "simple_implement_signal_slot.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #ifndef UNIX_LINUX
-#include <windows.h>
+	#include <windows.h>
 #else
+	#include <pthread.h>
 #endif
-#include "simplelog.h"
+
 /*===============================================================================================================*/
 /* Email:
 *		<nguyenthaithuanalg@gmail.com> - Nguyễn Thái Thuận
@@ -24,8 +29,14 @@
 /*
 #ifndef UNIX_LINUX
 #else
+	using namespace std::literals;
 #endif
 */
+//
+#ifndef UNIX_LINUX
+#else
+//using namespace std::literals;
+#endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 simple_signal_slot::simple_signal_slot()

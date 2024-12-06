@@ -1,5 +1,10 @@
 #include "simple_signal_slot.h"
-#include "Windows.h"
+
+#ifndef UNIX_LINUX
+	#include "Windows.h"
+#else
+
+#endif
 #include "simplelog.h"
 #include <stdlib.h>
 #include <string.h>
@@ -22,6 +27,8 @@ abc::~abc() {
 void abc::AccessMainThread(void* evt) {
 	std::string name = "";
 	this->GetName(name);
+	
+	free(evt);
 	spllog(0, "what's the hell: %s", name.c_str());
 }
 
@@ -32,7 +39,12 @@ int abc::event_slot(GENERIC_DATA_OBJ* evt) {
 	return 0;
 }
 int main(int argc, char *argv[]) {
+	
+#ifndef UNIX_LINUX
 	spl_init_log("C:/z/simple-signal-slot/simplelog/simplelog.cfg");
+#else
+	spl_init_log("./simplelog.cfg");
+#endif
 	spllog(SPL_LOG_BASE, "test");
 	//simple_signal_slot::InitMainthreadID();
 	do {
@@ -67,8 +79,12 @@ int main(int argc, char *argv[]) {
 
 		obj1.signal_event(&obj1, &obj0, test_01);
 		simple_signal_slot::raise_event(&obj1, test_02);
+#ifndef UNIX_LINUX
+		//Sleep(5 * 1000);
+#else
 
-		Sleep(5 * 1000);
+#endif
+		spl_sleep(5);
 	} while (0);
 	spl_finish_log();
 	return 0;

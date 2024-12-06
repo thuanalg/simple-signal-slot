@@ -1,10 +1,14 @@
 ﻿#include "simple_implement_signal_slot.h"
 #include "simplelog.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #ifndef UNIX_LINUX
 	#include <windows.h>
 #else
 	#include <pthread.h>
+	#include <semaphore.h>
 #endif
 
 /*===============================================================================================================*/
@@ -41,13 +45,12 @@
 #define ss_pthread_mutex_unlock(__obj, __err) \
 		{ (__err) = pthread_mutex_unlock((pthread_mutex_t*)(__obj)); if((__err)) spllog(0, "pthread_mutex_unlock errcode: %d. %s\n", (__err), (__err) ? "FALIED": "DONE");}
 
-#define ss_sem_wait(__obj) \
-		sem_wait((sem_t*)(__obj))
-
-#define ss_sem_post(__obj) \
-		sem_post((sem_t*)(__obj))
 #endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+#ifndef UNIX_LINUX
+#else
+//using namespace std::literals;
+#endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 static void*
 	ss_mutex_create();
@@ -55,6 +58,9 @@ static int
 	ss_mutex_unlock(void* obj);
 static int 
 	ss_mutex_lock(void* obj);
+static
+	int ss_mutex_close(void* obj);
+
 
 static void*
 	ss_sem_create(int ini);
@@ -62,9 +68,41 @@ static
 	int ss_sem_post(void* obj);
 static 
 	int ss_sem_wait(void* obj);
+static
+	int ss_sem_close(void* obj);
 
+
+#ifndef UNIX_LINUX
 static DWORD WINAPI simple_implement_signal_slot_wait_for_event_loop(LPVOID lpParam);
+#else
+static void *simple_implement_signal_slot_wait_for_event_loop(void* lpParam);
+#endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+int ss_sem_close(void* obj) {
+	int ret = 0;
+	do {
+#ifndef UNIX_LINUX
+		CloseHandle((HANDLE)obj);
+#else
+		ret = sem_destroy((sem_t*)obj);
+		free(obj);
+#endif
+	} while (0);
+	return ret;
+}
+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+int ss_mutex_close(void* obj) {
+	int ret = 0;
+	do {
+#ifndef UNIX_LINUX
+		CloseHandle((HANDLE)obj);
+#else
+		ret = pthread_mutex_destroy((pthread_mutex_t*) obj);
+		free(obj);
+#endif
+	} while (0);
+	return ret;
+}
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 int simple_implement_signal_slot::initial() {
 	
@@ -93,9 +131,10 @@ simple_implement_signal_slot::simple_implement_signal_slot(simple_signal_slot* l
 	}
 	else {
 		simple_implement_signal_slot* obj = (simple_implement_signal_slot*)looper->m_implement;
+		simple_implement_signal_slot* loopper = (simple_implement_signal_slot*)obj->m_looper;
 		m_looper = obj->m_looper;
 		m_sem = m_mutex = 0;
-		m_curentThread = obj->m_looper->m_curentThread;
+		m_curentThread = loopper->m_curentThread;
 	}
 }
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -104,11 +143,11 @@ simple_implement_signal_slot::~simple_implement_signal_slot()
 {
 	spllog(SPL_LOG_BASE, "0x:%p", this);
 	if (m_sem) {
-		CloseHandle((HANDLE)m_sem);
+		ss_sem_close(m_sem);
 		m_sem = 0;
 	}
 	if (m_mutex) {
-		CloseHandle((HANDLE)m_mutex);
+		ss_mutex_close(m_mutex);
 		m_mutex = 0;
 	}
 }
@@ -118,6 +157,7 @@ int simple_implement_signal_slot::signal_event(simple_signal_slot* src, simple_s
 {
 	int ret = 0;
 	simple_implement_signal_slot* p = 0;
+	simple_implement_signal_slot* looper = 0;
 	do {
 		SS_EVENT_ST *obj = 0;
 		//obj = (SS_EVENT_ST*) malloc(sizeof(SS_EVENT_ST));
@@ -132,15 +172,16 @@ int simple_implement_signal_slot::signal_event(simple_signal_slot* src, simple_s
 			break;
 		}
 		p = (simple_implement_signal_slot*)target->m_implement;
+		looper = (simple_implement_signal_slot*)p->m_looper;
 		if (!p->m_looper) {
 			break;
 		}
-		ss_mutex_lock(p->m_looper->m_mutex);
+		ss_mutex_lock(looper->m_mutex);
 		if (1) {
-			p->m_looper->m_eventList.push_back(obj);
+			looper->m_eventList.push_back(obj);
 		}
-		ss_mutex_unlock(p->m_looper->m_mutex);
-		ss_sem_post(p->m_looper->m_sem);
+		ss_mutex_unlock(looper->m_mutex);
+		ss_sem_post(looper->m_sem);
 	} while (0);
 	return ret;
 }
@@ -171,15 +212,21 @@ int simple_implement_signal_slot::generate_event_thread(void* arg)
 		DWORD thid = 0;
 		hd = CreateThread(0, 0, simple_implement_signal_slot_wait_for_event_loop, arg, 0, &thid);
 #else
+		pthread_t pid = 0;
+		pthread_create(&pid, 0, simple_implement_signal_slot_wait_for_event_loop, arg);
 #endif
 	} while (0);
 	return 0;
 }
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+#ifndef UNIX_LINUX
 DWORD WINAPI 
 simple_implement_signal_slot_wait_for_event_loop
 (LPVOID arg)
+#else
+void *simple_implement_signal_slot_wait_for_event_loop(void* arg)
+#endif
 {
 	int ret = 0;
 	simple_implement_signal_slot* obj = (simple_implement_signal_slot*) arg;
@@ -187,15 +234,15 @@ simple_implement_signal_slot_wait_for_event_loop
 	std::vector<SS_EVENT_ST *> currentEvents;
 	SS_EVENT_ST* tmp = 0;
 	simple_signal_slot* target = 0;
-	HANDLE semaphore = (HANDLE)obj->m_sem;
+	//HANDLE semaphore = (HANDLE)obj->m_sem;
 	int isstop = 0;
 	obj->m_curentThread = (LLU)ss_get_threadid();
 	while (1)
 	{
-		if (!semaphore) {
+		if (!obj->m_sem) {
 			break;
 		}
-		WaitForSingleObject(semaphore, INFINITE);
+		ss_sem_wait(obj->m_sem);
 		spllog(SPL_LOG_BASE, "Enter event loop.");
 		ss_mutex_lock(obj->m_mutex);
 		if (1) {
@@ -240,7 +287,7 @@ simple_implement_signal_slot_wait_for_event_loop
 		}
 	}
 	spllog(SPL_LOG_BASE, "End event loop.");
-	return ret;
+	return 0;
 }
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -327,7 +374,8 @@ int ss_sem_post(void* sem) {
 			ret = (int)GetLastError();
 		}
 #else
-		ret = ss_sem_post(sem);
+		ret = sem_post((sem_t*)sem);
+		spllog(0, "sem_post: ret: %d", ret);
 #endif
 	} while (0);
 	return ret;
@@ -338,7 +386,7 @@ int ss_sem_wait(void* obj) {
 #ifndef UNIX_LINUX
 		ret = (int)WaitForSingleObject((HANDLE)obj, INFINITE);
 #else
-		ret = ss_sem_wait(obj);
+		ret = sem_wait((sem_t*)obj);
 #endif
 	} while (0);
 	return ret;
@@ -370,7 +418,7 @@ void* ss_mutex_create() {
 		ret = CreateMutexA(0, 0, 0);
 #else
 		/*https://linux.die.net/man/3/pthread_mutex_init*/
-		spl_malloc(sizeof(pthread_mutex_t), ret, void);
+		ss_malloc(sizeof(pthread_mutex_t), ret, void);
 		if (!ret) {
 			break;
 		}
