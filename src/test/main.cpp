@@ -1,5 +1,10 @@
 #include "simple_signal_slot.h"
-#include "Windows.h"
+
+#ifndef UNIX_LINUX
+	#include "Windows.h"
+#else
+
+#endif
 #include "simplelog.h"
 #include <stdlib.h>
 #include <string.h>
@@ -68,11 +73,11 @@ int main(int argc, char *argv[]) {
 		obj1.signal_event(&obj1, &obj0, test_01);
 		simple_signal_slot::raise_event(&obj1, test_02);
 #ifndef UNIX_LINUX
-		Sleep(5 * 1000);
+		//Sleep(5 * 1000);
 #else
 
 #endif
-		
+		spl_sleep(5 * 1000);
 	} while (0);
 	spl_finish_log();
 	return 0;
