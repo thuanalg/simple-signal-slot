@@ -5,8 +5,8 @@ LIBS+=-lpthread
 src=../simplelog/simplelog.c ../simplelog/simplelog.h ../simplelog/simplelog_config.h
 INC=-I../
 #CFLAGS=-ansi
-CFLAGS=-std=gnu89
-CPPFLAGS=-std=c++98
+CFLAGS=-std=gnu89 -DUNIX_LINUX
+CPPFLAGS=-std=c++98 -DUNIX_LINUX
 
 debug:
 	gcc ${debugFlag} -o ${target} ${src} ${LIBS} ${CFLAGS}
