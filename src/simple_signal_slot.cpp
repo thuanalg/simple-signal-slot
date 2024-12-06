@@ -1,4 +1,5 @@
 ﻿#include "simple_signal_slot.h"
+#include "simplelog.h"
 #include "simple_implement_signal_slot.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +9,7 @@
 #else
 	#include <pthread.h>
 #endif
-#include "simplelog.h"
+
 /*===============================================================================================================*/
 /* Email:
 *		<nguyenthaithuanalg@gmail.com> - Nguyễn Thái Thuận
