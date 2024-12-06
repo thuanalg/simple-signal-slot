@@ -67,8 +67,12 @@ int main(int argc, char *argv[]) {
 
 		obj1.signal_event(&obj1, &obj0, test_01);
 		simple_signal_slot::raise_event(&obj1, test_02);
-
+#ifndef UNIX_LINUX
 		Sleep(5 * 1000);
+#else
+
+#endif
+		
 	} while (0);
 	spl_finish_log();
 	return 0;
