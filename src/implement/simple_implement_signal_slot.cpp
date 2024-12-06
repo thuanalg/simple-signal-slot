@@ -411,7 +411,7 @@ void* ss_mutex_create() {
 		ret = CreateMutexA(0, 0, 0);
 #else
 		/*https://linux.die.net/man/3/pthread_mutex_init*/
-		spl_malloc(sizeof(pthread_mutex_t), ret, void);
+		ss_malloc(sizeof(pthread_mutex_t), ret, void);
 		if (!ret) {
 			break;
 		}
