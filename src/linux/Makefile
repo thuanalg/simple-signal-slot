@@ -9,7 +9,7 @@ INC+=-I../simplelog
 CFLAGS=-std=gnu89 -DUNIX_LINUX
 CPPFLAGS=-std=c++98 -DUNIX_LINUX
 signal_slot = ../implement/simple_implement_signal_slot.h ../implement/simple_implement_signal_slot.cpp 
-signal_slot += ../implement/simple_signal_slot.h ../implement/simple_signal_slot.cpp 
+signal_slot += ../simple_signal_slot.h ../simple_signal_slot.cpp 
 libtarget_signalslot=libsignalslot.so
 
 debug:
