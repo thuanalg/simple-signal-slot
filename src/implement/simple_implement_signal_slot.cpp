@@ -45,9 +45,9 @@
 #define ss_pthread_mutex_unlock(__obj, __err) \
 		{ (__err) = pthread_mutex_unlock((pthread_mutex_t*)(__obj)); if((__err)) spllog(0, "pthread_mutex_unlock errcode: %d. %s\n", (__err), (__err) ? "FALIED": "DONE");}
 
-#define ss_sem_wait(__obj)	sem_wait((sem_t*)(__obj))
+#define ss_sem_wait(__obj)				sem_wait((sem_t*)(__obj))
 
-#define ss_sem_post(__obj)  sem_post((sem_t*)(__obj))
+#define ss_sem_post(__obj__)			sem_post((sem_t*)(__obj__))
 #endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
