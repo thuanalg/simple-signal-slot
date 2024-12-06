@@ -212,6 +212,8 @@ int simple_implement_signal_slot::generate_event_thread(void* arg)
 		DWORD thid = 0;
 		hd = CreateThread(0, 0, simple_implement_signal_slot_wait_for_event_loop, arg, 0, &thid);
 #else
+		pthread_t pid = 0;
+		pthread_create(&pid, 0, simple_implement_signal_slot_wait_for_event_loop, arg);
 #endif
 	} while (0);
 	return 0;
