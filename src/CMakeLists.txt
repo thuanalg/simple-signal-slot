@@ -20,6 +20,7 @@ add_library(simple_signal_slot_lib SHARED ${SOURCE_LIB_FILES})
 target_compile_definitions(simple_signal_slot_lib PRIVATE EXPORT_DLL_API_SIMPLE_SIGNAL_SLOT=1)
 target_compile_definitions(simple_signal_slot_lib PUBLIC _CRT_SECURE_NO_WARNINGS=1)
 if(DEFINED UNIX_LINUX)
+	set(CMAKE_CXX_STANDARD 11)
 	target_compile_definitions(simple_signal_slot_lib PUBLIC UNIX_LINUX=1)
 endif()
 
