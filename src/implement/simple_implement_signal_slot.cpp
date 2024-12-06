@@ -45,14 +45,6 @@
 #define ss_pthread_mutex_unlock(__obj, __err) \
 		{ (__err) = pthread_mutex_unlock((pthread_mutex_t*)(__obj)); if((__err)) spllog(0, "pthread_mutex_unlock errcode: %d. %s\n", (__err), (__err) ? "FALIED": "DONE");}
 
-//#define ss_sem_wait(__obj)				do { sem_wait((sem_t*)(__obj)) ;} while(0);
-//
-//#define ss_sem_post(__obj__)			do { sem_post((sem_t*)(__obj__)); } while(0);
-
-#define SS_sem_wait(__obj) \
-		sem_wait((sem_t*)(__obj))
-#define SS_sem_post(__obj) \
-		sem_post((sem_t*)(__obj))
 #endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -69,8 +61,11 @@ static
 	int ss_sem_post(void* obj);
 static 
 	int ss_sem_wait(void* obj);
-
+#ifndef UNIX_LINUX
 static DWORD WINAPI simple_implement_signal_slot_wait_for_event_loop(LPVOID lpParam);
+#else
+static void *simple_implement_signal_slot_wait_for_event_loop(void* lpParam);
+#endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 int simple_implement_signal_slot::initial() {
