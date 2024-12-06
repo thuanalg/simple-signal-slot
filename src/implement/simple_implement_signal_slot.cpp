@@ -182,9 +182,13 @@ int simple_implement_signal_slot::generate_event_thread(void* arg)
 }
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+#ifndef UNIX_LINUX
 DWORD WINAPI 
 simple_implement_signal_slot_wait_for_event_loop
 (LPVOID arg)
+#else
+void *simple_implement_signal_slot_wait_for_event_loop(void* arg)
+#endif
 {
 	int ret = 0;
 	simple_implement_signal_slot* obj = (simple_implement_signal_slot*) arg;
@@ -192,15 +196,15 @@ simple_implement_signal_slot_wait_for_event_loop
 	std::vector<SS_EVENT_ST *> currentEvents;
 	SS_EVENT_ST* tmp = 0;
 	simple_signal_slot* target = 0;
-	HANDLE semaphore = (HANDLE)obj->m_sem;
+	//HANDLE semaphore = (HANDLE)obj->m_sem;
 	int isstop = 0;
 	obj->m_curentThread = (LLU)ss_get_threadid();
 	while (1)
 	{
-		if (!semaphore) {
+		if (!obj->m_sem) {
 			break;
 		}
-		WaitForSingleObject(semaphore, INFINITE);
+		ss_sem_wait(obj->m_sem);
 		spllog(SPL_LOG_BASE, "Enter event loop.");
 		ss_mutex_lock(obj->m_mutex);
 		if (1) {
