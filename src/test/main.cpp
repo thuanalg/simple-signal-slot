@@ -27,6 +27,8 @@ abc::~abc() {
 void abc::AccessMainThread(void* evt) {
 	std::string name = "";
 	this->GetName(name);
+	
+	free(evt);
 	spllog(0, "what's the hell: %s", name.c_str());
 }
 
