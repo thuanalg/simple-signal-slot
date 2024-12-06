@@ -372,7 +372,7 @@ int ss_sem_post(void* sem) {
 			ret = (int)GetLastError();
 		}
 #else
-		ret = ss_sem_post(sem);
+		ret = sem_post((sem_t*)sem);
 #endif
 	} while (0);
 	return ret;
@@ -383,7 +383,7 @@ int ss_sem_wait(void* obj) {
 #ifndef UNIX_LINUX
 		ret = (int)WaitForSingleObject((HANDLE)obj, INFINITE);
 #else
-		ret = ss_sem_wait(obj);
+		ret = sem_wait((sem_t*)obj);
 #endif
 	} while (0);
 	return ret;
