@@ -16,6 +16,7 @@
 #ifndef ___SIMPLE_SIGNAL_SLOT__
 #define ___SIMPLE_SIGNAL_SLOT__
 #include <string>
+#include "simplelog.h"
 using namespace std;
 #ifdef __cplusplus
 extern "C" {
