@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <pthread.h>
 #ifndef UNIX_LINUX
 	#include <windows.h>
 #else
