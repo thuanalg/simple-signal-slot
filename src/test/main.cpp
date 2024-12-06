@@ -37,7 +37,12 @@ int abc::event_slot(GENERIC_DATA_OBJ* evt) {
 	return 0;
 }
 int main(int argc, char *argv[]) {
+	
+#ifndef UNIX_LINUX
 	spl_init_log("C:/z/simple-signal-slot/simplelog/simplelog.cfg");
+#else
+	spl_init_log("./simplelog.cfg");
+#endif
 	spllog(SPL_LOG_BASE, "test");
 	//simple_signal_slot::InitMainthreadID();
 	do {

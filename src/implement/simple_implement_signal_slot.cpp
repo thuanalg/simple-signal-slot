@@ -373,6 +373,7 @@ int ss_sem_post(void* sem) {
 		}
 #else
 		ret = sem_post((sem_t*)sem);
+		spllog(0, "sem_post: ret: %d", ret);
 #endif
 	} while (0);
 	return ret;
