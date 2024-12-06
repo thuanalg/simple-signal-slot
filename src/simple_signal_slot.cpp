@@ -4,6 +4,7 @@
 #ifndef UNIX_LINUX
 #include <windows.h>
 #else
+#include <pthread.h>
 #endif
 #include "simplelog.h"
 /*===============================================================================================================*/
