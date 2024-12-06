@@ -54,6 +54,9 @@ static int
 	ss_mutex_unlock(void* obj);
 static int 
 	ss_mutex_lock(void* obj);
+static
+	int ss_mutex_close(void* obj);
+
 
 static void*
 	ss_sem_create(int ini);
@@ -61,12 +64,41 @@ static
 	int ss_sem_post(void* obj);
 static 
 	int ss_sem_wait(void* obj);
+static
+	int ss_sem_close(void* obj);
+
+
 #ifndef UNIX_LINUX
 static DWORD WINAPI simple_implement_signal_slot_wait_for_event_loop(LPVOID lpParam);
 #else
 static void *simple_implement_signal_slot_wait_for_event_loop(void* lpParam);
 #endif
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+int ss_sem_close(void* obj) {
+	int ret = 0;
+	do {
+#ifndef UNIX_LINUX
+		CloseHandle((HANDLE)obj);
+#else
+		ret = sem_destroy((sem_t*)obj);
+		free(obj);
+#endif
+	} while (0);
+	return ret;
+}
+//-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+int ss_mutex_close(void* obj) {
+	int ret = 0;
+	do {
+#ifndef UNIX_LINUX
+		CloseHandle((HANDLE)obj);
+#else
+		ret = pthread_mutex_destroy((pthread_mutex_t*) obj);
+		free(obj);
+#endif
+	} while (0);
+	return ret;
+}
 //-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 int simple_implement_signal_slot::initial() {
 	
@@ -107,11 +139,11 @@ simple_implement_signal_slot::~simple_implement_signal_slot()
 {
 	spllog(SPL_LOG_BASE, "0x:%p", this);
 	if (m_sem) {
-		CloseHandle((HANDLE)m_sem);
+		ss_sem_close(m_sem);
 		m_sem = 0;
 	}
 	if (m_mutex) {
-		CloseHandle((HANDLE)m_mutex);
+		ss_mutex_close(m_mutex);
 		m_mutex = 0;
 	}
 }
