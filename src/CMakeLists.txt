@@ -19,10 +19,16 @@ include_directories(./ ./implement)
 add_library(simple_signal_slot_lib SHARED ${SOURCE_LIB_FILES})
 target_compile_definitions(simple_signal_slot_lib PRIVATE EXPORT_DLL_API_SIMPLE_SIGNAL_SLOT=1)
 target_compile_definitions(simple_signal_slot_lib PUBLIC _CRT_SECURE_NO_WARNINGS=1)
+if(DEFINED UNIX_LINUX)
+	target_compile_definitions(simple_signal_slot_lib PUBLIC UNIX_LINUX=1)
+endif()
 
 add_library(simpleloglib SHARED ${SOURCE_SIMPLELOG_LIB_FILES})
 target_compile_definitions(simpleloglib PRIVATE EXPORT_DLL_API_SIMPLE_LOG=1)
 target_compile_definitions(simpleloglib PUBLIC _CRT_SECURE_NO_WARNINGS=1)
+if(DEFINED UNIX_LINUX)
+	target_compile_definitions(simpleloglib PUBLIC UNIX_LINUX=1)
+endif()
 
 
 
@@ -30,6 +36,9 @@ target_compile_definitions(simpleloglib PUBLIC _CRT_SECURE_NO_WARNINGS=1)
 include_directories(./ ./simplelog)
 add_executable(simple_signal_slot_example ${SOURCE_BINCPP_FILES})
 target_compile_definitions(simple_signal_slot_example PUBLIC _CRT_SECURE_NO_WARNINGS=1)
+if(DEFINED UNIX_LINUX)
+	target_compile_definitions(simple_signal_slot_example PUBLIC UNIX_LINUX=1)
+endif()
 
 add_executable(ztest ${SOURCE_BIN_TMP_FILES})
 target_compile_definitions(ztest PUBLIC _CRT_SECURE_NO_WARNINGS=1)
