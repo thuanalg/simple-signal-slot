@@ -17,14 +17,14 @@ debug:
 	gcc ${debugFlag} -o ${target} ${src} ${LIBS} ${CFLAGS}
 #	gcc -g -o simpplelog_sample  ../c_test/main.c ${src} ${LIBS} ${INC}
 	g++ ${debugFlag} -o ${libtarget_signalslot}  ${signal_slot} ${LIBS} ${CPPFLAGS} ${INC} -L./ -lsimplelog
-	g++ -g -o sample  ../main.cpp  ${INC} ${CPPFLAGS} -L./ -lsimplelog -L./ -lsignalslot
+	g++ -g -o sample  ../test/main.cpp  ${INC} ${CPPFLAGS} -L./ -lsimplelog -L./ -lsignalslot
 
 release:
 	gcc ${releaseFlag} -o ${target} ${src} ${LIBS} ${CFLAGS}
 #	gcc -o simpplelog_sample  ../c_test/main.c ${src} ${LIBS} ${INC}
 #	g++ -o simpplelog_cpp_sample  ../cpp_test/main.cpp ${LIBS} ${INC} ${CPPFLAGS} -L./ -lsimplelog
 #	g++ -o simpplelog_cpp_direct_sample  ../cpp_test/main.cpp ${src} ${LIBS} ${INC} ${CPPFLAGS}
-	g++ -g -o sample  ../main.cpp  ${INC} ${CPPFLAGS} -L./ -lsimplelog -L./ -lsignalslot
+	g++ -g -o sample  ../test/main.cpp  ${INC} ${CPPFLAGS} -L./ -lsimplelog -L./ -lsignalslot
 
 clean:
 	rm -rf ${target} ${libtarget_signalslot}
